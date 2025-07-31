@@ -6,3 +6,6 @@ includes:
   stack:
     taskfile: stack/Taskfile.yml
     dir: ./stack
+  web:
+    taskfile: src/web/Taskfile.yml
+    dir: ./src/web
