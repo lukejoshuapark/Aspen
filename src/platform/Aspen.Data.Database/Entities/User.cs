@@ -7,7 +7,7 @@ public sealed class User
     public required Guid Id { get; set; }
     public required string DisplayName { get; set; }
 
-    public required ICollection<Post> Posts { get; set; } = new List<Post>();
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public static void Configure(ModelBuilder modelBuilder)
     {

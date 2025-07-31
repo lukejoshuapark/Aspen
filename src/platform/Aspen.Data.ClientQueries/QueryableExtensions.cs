@@ -6,6 +6,14 @@ public static class QueryableExtensions
 {
     public static IQueryable<T> WithClientQuery<T>(this IQueryable<T> queryable, ClientQueryOptions options)
     {
+        if (options.Filters != null)
+        {
+            foreach (var filter in options.Filters)
+            {
+                queryable = filter.ApplyTo(queryable);
+            }
+        }
+
         var firstSort = options.Sorts.FirstOrDefault();
         if (firstSort != null)
         {
