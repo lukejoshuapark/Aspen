@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Aspen.Data.ClientQueries.Options;
@@ -9,7 +10,7 @@ public sealed class ClientQuerySortOption
     public required string Column { get; set; }
 
     [JsonPropertyName("direction")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonSortDirectionConverter))]
     public SortDirection Direction { get; set; }
 }
 
@@ -44,4 +45,49 @@ public static class ClientQuerySortOptionExtensions
         var converted = Expression.Convert(property, typeof(object));
         return Expression.Lambda<Func<T, object>>(converted, parameter);
     }
+}
+
+public class JsonSortDirectionConverter : JsonConverter<SortDirection>
+{
+    public override SortDirection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+            return SortDirection.Ascending;
+
+        if (reader.TokenType == JsonTokenType.Number)
+        {
+            try
+            {
+                var number = reader.GetInt32();
+                return number switch
+                {
+                    0 => SortDirection.Ascending,
+                    1 => SortDirection.Descending,
+                    _ => throw new JsonException($"{number} is not a valid sort direction")
+                };
+            }
+            catch (FormatException)
+            {
+                throw new JsonException("Sort direction must be an integer");
+            }
+        }
+
+        if (reader.TokenType != JsonTokenType.String)
+            throw new JsonException("Expected string or number for sort direction");
+
+        var value = reader.GetString();
+        if (value == null)
+            throw new JsonException("Sort direction cannot be null");
+
+        if (value.ToLower().StartsWith("asc"))
+            return SortDirection.Ascending;
+
+        if (value.ToLower().StartsWith("desc"))
+            return SortDirection.Descending;
+
+        throw new JsonException($"{value} is not a valid sort direction");
+    }
+
+    public override void Write(Utf8JsonWriter writer, SortDirection value, JsonSerializerOptions options)
+        => writer.WriteStringValue(value == SortDirection.Ascending ? "ASC" : "DESC");
 }
