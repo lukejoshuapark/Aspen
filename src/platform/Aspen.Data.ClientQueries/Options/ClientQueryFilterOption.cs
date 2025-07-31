@@ -10,11 +10,14 @@ public class ClientQueryFilterOption
     public string? Column { get; set; }
 
     [JsonPropertyName("operator")]
-    [JsonConverter(typeof(JsonStringEnumConverter))] // TODO: Converter for actual symbols
-    public ComparisonOperator? Operator { get; set; }
+    [JsonConverter(typeof(JsonFilterOperatorConverter))]
+    public FilterOperator? Operator { get; set; }
 
     [JsonPropertyName("operand")]
     public JsonElement? Operand { get; set; }
+
+    [JsonPropertyName("filters")]
+    public ClientQueryFilterOption[]? Filters { get; set; }
 }
 
 public static class ClientQueryFilterOptionExtensions
@@ -22,9 +25,17 @@ public static class ClientQueryFilterOptionExtensions
     public static IQueryable<T> ApplyTo<T>(this ClientQueryFilterOption filter, IQueryable<T> queryable)
         => queryable.Where(AsExpression<T>(filter));
 
-    private static Expression<Func<T, bool>> AsExpression<T>(ClientQueryFilterOption filter)
+    private static Expression<Func<T, bool>> AsExpression<T>(ClientQueryFilterOption filter, ParameterExpression? parameter = null)
     {
-        var parameter = Expression.Parameter(typeof(T), "x");
+        parameter ??= Expression.Parameter(typeof(T), "x");
+
+        return filter.Filters == null
+            ? AsComparisonExpression<T>(filter, parameter)
+            : AsLogicalExpression<T>(filter, parameter);
+    }
+
+    private static Expression<Func<T, bool>> AsComparisonExpression<T>(ClientQueryFilterOption filter, ParameterExpression parameter)
+    {
         var property = Expression.Property(parameter, filter.Column!);
         var constant = filter.Operand?.ValueKind switch
         {
@@ -37,16 +48,32 @@ public static class ClientQueryFilterOptionExtensions
 
         var body = filter.Operator switch
         {
-            ComparisonOperator.Equals => Expression.Equal(property, constant),
-            ComparisonOperator.NotEquals => Expression.NotEqual(property, constant),
-            ComparisonOperator.GreaterThan => Expression.GreaterThan(property, constant),
-            ComparisonOperator.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
-            ComparisonOperator.LessThan => Expression.LessThan(property, constant),
-            ComparisonOperator.LessThanOrEqual => Expression.LessThanOrEqual(property, constant),
-            _ => throw new NotSupportedException($"Filter operator {filter.Operator} is not supported.")
+            FilterOperator.Equals => Expression.Equal(property, constant),
+            FilterOperator.NotEquals => Expression.NotEqual(property, constant),
+            FilterOperator.GreaterThan => Expression.GreaterThan(property, constant),
+            FilterOperator.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
+            FilterOperator.LessThan => Expression.LessThan(property, constant),
+            FilterOperator.LessThanOrEqual => Expression.LessThanOrEqual(property, constant),
+            _ => throw new NotSupportedException($"Filter operator {filter.Operator} is not supported for comparisons.")
         };
 
         return Expression.Lambda<Func<T, bool>>(body, parameter);
+    }
+
+    private static Expression<Func<T, bool>> AsLogicalExpression<T>(ClientQueryFilterOption filter, ParameterExpression parameter)
+    {
+        if (filter.Filters == null || filter.Filters.Length < 2)
+            throw new ArgumentException("Logical filters must contain at least two sub-filters.", nameof(filter.Filters));
+
+        var expressions = filter.Filters.Select(subFilter => AsExpression<T>(subFilter, parameter).Body);
+        var combinedBody = filter.Operator switch
+        {
+            FilterOperator.And => expressions.Aggregate(Expression.AndAlso),
+            FilterOperator.Or => expressions.Aggregate(Expression.OrElse),
+            _ => throw new NotSupportedException($"Filter operator {filter.Operator} is not supported for logical operations.")
+        };
+
+        return Expression.Lambda<Func<T, bool>>(combinedBody, parameter);
     }
 
     private static object GetNumberConstant(JsonElement operand, Type type)
@@ -66,12 +93,51 @@ public static class ClientQueryFilterOptionExtensions
         };
 }
 
-public enum ComparisonOperator
+public enum FilterOperator
 {
     Equals,
     NotEquals,
     GreaterThan,
     GreaterThanOrEqual,
     LessThan,
-    LessThanOrEqual
+    LessThanOrEqual,
+    And,
+    Or
+}
+
+public class JsonFilterOperatorConverter : JsonConverter<FilterOperator>
+{
+    public override FilterOperator Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.String)
+            throw new JsonException("Expected string for filter operator");
+
+        var value = reader.GetString();
+        return value switch
+        {
+            "==" => FilterOperator.Equals,
+            "!=" => FilterOperator.NotEquals,
+            ">" => FilterOperator.GreaterThan,
+            ">=" => FilterOperator.GreaterThanOrEqual,
+            "<" => FilterOperator.LessThan,
+            "<=" => FilterOperator.LessThanOrEqual,
+            "&&" => FilterOperator.And,
+            "||" => FilterOperator.Or,
+            _ => throw new JsonException($"Unknown filter operator: {reader.GetString()}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, FilterOperator value, JsonSerializerOptions _)
+        => writer.WriteStringValue(value switch
+        {
+            FilterOperator.Equals => "==",
+            FilterOperator.NotEquals => "!=",
+            FilterOperator.GreaterThan => ">",
+            FilterOperator.GreaterThanOrEqual => ">=",
+            FilterOperator.LessThan => "<",
+            FilterOperator.LessThanOrEqual => "<=",
+            FilterOperator.And => "&&",
+            FilterOperator.Or => "||",
+            _ => throw new JsonException($"{value} is not a valid filter operator")
+        });
 }
