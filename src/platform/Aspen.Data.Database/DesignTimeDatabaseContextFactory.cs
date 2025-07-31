@@ -1,3 +1,4 @@
+using Aspen.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -8,13 +9,12 @@ public class DesignTimeDatabaseContextFactory : IDesignTimeDbContextFactory<Data
 {
     public DatabaseContext CreateDbContext(string[] args)
     {
-        var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddJsonStream(typeof(DesignTimeDatabaseContextFactory).Assembly.GetManifestResourceStream("Aspen.Data.Database.Aspen.json")!);
-
-        var configuration = configurationBuilder.Build();
+        var configuration = new ConfigurationBuilder()
+            .AddAspenConfiguration()
+            .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("SqlServer"));
+        optionsBuilder.UseAspenSqlServer(configuration);
 
         return new DatabaseContext(optionsBuilder.Options);
     }

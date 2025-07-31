@@ -1,3 +1,6 @@
+using Aspen.Configuration;
+using Aspen.Data.Database;
+
 namespace Aspen.Application.Api;
 
 public static class Program
@@ -6,11 +9,13 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Configuration.Sources.Clear();
-        builder.Configuration.AddJsonStream(typeof(Program).Assembly.GetManifestResourceStream("Aspen.Application.Api.Aspen.json")!);
+        var configuration = builder.Configuration;
+        configuration.Sources.Clear();
+        configuration.AddAspenConfiguration();
 
         var services = builder.Services;
         services.AddControllers();
+        services.AddAspenDatabase(configuration);
 
         var app = builder.Build();
         app.MapControllers();
