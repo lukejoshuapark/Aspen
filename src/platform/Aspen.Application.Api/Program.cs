@@ -7,7 +7,7 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Configuration.Sources.Clear();
-        builder.Configuration.AddJsonFile("Aspen.json");
+        builder.Configuration.AddJsonStream(typeof(Program).Assembly.GetManifestResourceStream("Aspen.Application.Api.Aspen.json")!);
 
         var services = builder.Services;
         services.AddControllers();

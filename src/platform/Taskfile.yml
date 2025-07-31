@@ -1,8 +1,9 @@
 version: "3"
 tasks:
-  start:
-    env:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://localhost:42070
+  add-migration:
     cmds:
-      - dotnet run --project Aspen.Application.Api
+      - dotnet ef migrations add {{.CLI_ARGS}} --project Aspen.Data.Database
+
+  migrate:
+    cmds:
+      - dotnet ef database update --project Aspen.Data.Database

@@ -2,4 +2,7 @@ version: "3"
 includes:
   platform:
     taskfile: src/platform/Taskfile.yml
-    dir: src/platform
+    dir: ./src/platform
+  stack:
+    taskfile: stack/Taskfile.yml
+    dir: ./stack

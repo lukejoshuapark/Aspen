@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    ports:
+      - 1432:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Aspen1234!"

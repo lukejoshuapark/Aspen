@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Aspen.Application.Api",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceFolder}/src/platform/Aspen.Application.Api/bin/Debug/net8.0/Aspen.Application.Api.dll",
+			"preLaunchTask": "build-aspen-api",
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"ASPNETCORE_URLS": "http://localhost:42070"
+			}
+		}
+	]
+}

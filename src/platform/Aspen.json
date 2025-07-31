@@ -1,0 +1,12 @@
+{
+	"AllowedHosts": "*",
+	"ConnectionStrings": {
+		"SqlServer": "Server=host.docker.internal,1432;User Id=sa;Password=Aspen1234!;Database=Aspen;TrustServerCertificate=true;"
+	},
+	"Logging": {
+		"LogLevel": {
+			"Default": "Information",
+			"Microsoft.AspNetCore": "Warning"
+		}
+	}
+}
