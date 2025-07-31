@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Aspen.Configuration/Aspen.Configuration.csproj" />
+    <ProjectReference Include="../Aspen.Data.ClientQueries/Aspen.Data.ClientQueries.csproj" />
     <ProjectReference Include="../Aspen.Data.Database/Aspen.Data.Database.csproj" />
   </ItemGroup>
 

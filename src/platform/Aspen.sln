@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspen.Data.Database", "Aspe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspen.Configuration", "Aspen.Configuration\Aspen.Configuration.csproj", "{CAB33D09-A767-49E2-8C93-D8A5C0FD2C9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspen.Data.ClientQueries", "Aspen.Data.ClientQueries\Aspen.Data.ClientQueries.csproj", "{83332F53-A15E-47F5-A22D-FDA26CFB677C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{CAB33D09-A767-49E2-8C93-D8A5C0FD2C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAB33D09-A767-49E2-8C93-D8A5C0FD2C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAB33D09-A767-49E2-8C93-D8A5C0FD2C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83332F53-A15E-47F5-A22D-FDA26CFB677C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83332F53-A15E-47F5-A22D-FDA26CFB677C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83332F53-A15E-47F5-A22D-FDA26CFB677C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83332F53-A15E-47F5-A22D-FDA26CFB677C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

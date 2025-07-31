@@ -1,3 +1,4 @@
+using Aspen.Data.ClientQueries;
 using Aspen.Data.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,14 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("{userId}")]
-    public async Task<IActionResult> ListAsync([FromRoute] Guid userId, [FromBody] object queryOptions)
+    public async Task<IActionResult> ListAsync([FromRoute] Guid userId, [FromBody] ClientQueryOptions queryOptions)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        var posts = await dbContext.Posts.Where(x => x.UserId == userId).ToListAsync();
+        var posts = await dbContext.Posts
+            .Where(x => x.UserId == userId)
+            .WithClientQuery(queryOptions)
+            .ToListAsync();
+
         return Ok(posts);
     }
 }
