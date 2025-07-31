@@ -1,0 +1,8 @@
+version: "3"
+tasks:
+  start:
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://localhost:42070
+    cmds:
+      - dotnet run --project Aspen.Application.Api
