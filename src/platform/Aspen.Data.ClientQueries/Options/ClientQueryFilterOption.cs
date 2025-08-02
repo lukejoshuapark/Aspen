@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Aspen.Data.ClientQueries.Options;
 
-public class ClientQueryFilterOption
+public sealed class ClientQueryFilterOption
 {
     [JsonPropertyName("column")]
     public string? Column { get; set; }

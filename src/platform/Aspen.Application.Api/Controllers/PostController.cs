@@ -1,3 +1,4 @@
+using Aspen.Application.Api.Cors;
 using Aspen.Data.ClientQueries;
 using Aspen.Data.Database;
 using Microsoft.AspNetCore.Cors;
@@ -8,6 +9,7 @@ namespace Aspen.Application.Api.Controllers;
 
 [ApiController]
 [Route("post")]
+[EnableCors(CorsPolicies.AllowAll)]
 public class PostController : ControllerBase
 {
     private readonly IDbContextFactory<DatabaseContext> _dbContextFactory;
@@ -23,6 +25,13 @@ public class PostController : ControllerBase
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
         var posts = await dbContext.Posts
             .Where(x => x.UserId == userId)
+            .Select(x => new
+            {
+                x.Id,
+                x.Title,
+                x.Description,
+                x.Likes
+            })
             .WithClientQuery(queryOptions)
             .ToListAsync();
 

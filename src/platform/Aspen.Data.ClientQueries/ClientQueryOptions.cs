@@ -10,6 +10,9 @@ public class ClientQueryOptions
 
     [JsonPropertyName("sort")]
     public ClientQuerySortOption[] Sorts { get; set; } = [];
+
+    [JsonPropertyName("pagination")]
+    public ClientQueryPaginationOption? Pagination { get; set; }
 }
 
 public class TransformativeClientQueryOptions : ClientQueryOptions

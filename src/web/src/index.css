@@ -1,11 +1,12 @@
 @custom-media --md (min-width: 768px);
+@custom-media --dm (prefers-color-scheme: dark);
 
 :root {
-	font-family: 'Inter', sans-serif; line-height: 1.5; font-weight: 400; font-synthesis: none; margin: 48px;
+	font-family: 'Inter', sans-serif; line-height: 1.5; font-weight: 400; font-synthesis: none;
 	text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
-	background-color: #F0F4F8;
+	background-color: #F0F4F8; color: #1F2937; font-size: 14px; margin: 64px;
 }

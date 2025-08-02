@@ -1,0 +1,49 @@
+.grid {
+	border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 6px;
+	overflow: hidden; font-size: 12px;
+
+	& > table {
+		width: 100%;
+		background-color: #FFF;
+		border-collapse: collapse;
+
+		th, td {
+			padding: 8px;
+			border: 1px solid rgba(0, 0, 0, 0.05);
+			border-left: 0;
+			border-right: 0;
+		}
+
+		th {
+			border-top: 0;
+			text-align: left;
+			font-weight: bold;
+			color: #6d6d6d;
+			background-color: #FAFAFA;
+			cursor: pointer;
+			transition: background-color 0.4s;
+
+			&:hover {
+				background-color: #F3F3F3;
+			}
+
+			& > div {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+
+				& > img {
+					width: 16px;
+					height: 16px;
+					cursor: pointer;
+				}
+			}
+		}
+
+		tfoot > tr > td {
+			border-bottom: 0;
+			background-color: #FAFAFA;
+		}
+	}
+}

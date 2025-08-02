@@ -6,6 +6,7 @@ export interface PostResponseModel {
 	readonly title: string;
 	readonly description: string;
 	readonly likes: number;
+	readonly other: boolean;
 }
 
 export const usePosts = (userId: string, queryOptions: ClientQueryOptions) => {

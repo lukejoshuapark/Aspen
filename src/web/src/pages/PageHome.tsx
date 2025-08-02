@@ -5,10 +5,10 @@ import type React from "react";
 import { useState } from "react";
 
 export const PageHome = (): React.JSX.Element => {
-	const [queryOptions, setQueryOptions] = useState<ClientQueryOptions>({ });
+	const [queryOptions, setQueryOptions] = useState<ClientQueryOptions>({ pagination: { cursor: 0, pageSize: 10 } });
 	const posts = usePosts("E31C78BB-4328-40D2-B460-570CF223580E", queryOptions);
 
 	return (
-		<Grid forQuery={posts} onQueryOptionsChange={setQueryOptions} />
+		<Grid forQuery={posts} keyPropertyName="id" onQueryOptionsChange={setQueryOptions} />
 	);
 };

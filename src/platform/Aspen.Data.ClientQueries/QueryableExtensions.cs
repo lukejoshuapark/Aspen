@@ -4,7 +4,7 @@ namespace Aspen.Data.ClientQueries;
 
 public static class QueryableExtensions
 {
-    public static IQueryable<T> WithClientQuery<T>(this IQueryable<T> queryable, ClientQueryOptions options)
+    public static IQueryable<T> WithClientQuery<T>(this IQueryable<T> queryable, ClientQueryOptions options, uint maximumPageSize = 1000)
     {
         if (options.Filters != null)
         {
@@ -25,6 +25,12 @@ public static class QueryableExtensions
             }
 
             queryable = orderedQueryable;
+        }
+
+        if (options.Pagination != null)
+        {
+            options.Pagination.PageSize = Math.Min(options.Pagination.PageSize, maximumPageSize);
+            queryable = options.Pagination.ApplyTo(queryable);
         }
 
         return queryable;

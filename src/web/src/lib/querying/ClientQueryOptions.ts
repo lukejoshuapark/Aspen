@@ -1,6 +1,7 @@
 export interface ClientQueryOptions {
 	readonly filter?: ClientQueryFilterOption[];
 	readonly sort?: ClientQuerySortOption[];
+	readonly pagination?: ClientQueryPaginationOption;
 }
 
 export interface ClientQueryFilterOption {
@@ -13,6 +14,11 @@ export interface ClientQueryFilterOption {
 export interface ClientQuerySortOption {
 	readonly column: string;
 	readonly direction: SortDirection;
+}
+
+export interface ClientQueryPaginationOption {
+	readonly cursor: number;
+	readonly pageSize: number;
 }
 
 export enum SortDirection {
