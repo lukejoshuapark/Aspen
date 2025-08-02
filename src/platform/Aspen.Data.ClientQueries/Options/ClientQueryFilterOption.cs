@@ -48,12 +48,12 @@ public static class ClientQueryFilterOptionExtensions
 
         var body = filter.Operator switch
         {
-            FilterOperator.Equals => Expression.Equal(property, constant),
-            FilterOperator.NotEquals => Expression.NotEqual(property, constant),
+            FilterOperator.EqualTo => Expression.Equal(property, constant),
+            FilterOperator.NotEqualTo => Expression.NotEqual(property, constant),
             FilterOperator.GreaterThan => Expression.GreaterThan(property, constant),
-            FilterOperator.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
+            FilterOperator.GreaterThanOrEqualTo => Expression.GreaterThanOrEqual(property, constant),
             FilterOperator.LessThan => Expression.LessThan(property, constant),
-            FilterOperator.LessThanOrEqual => Expression.LessThanOrEqual(property, constant),
+            FilterOperator.LessThanOrEqualTo => Expression.LessThanOrEqual(property, constant),
             _ => throw new NotSupportedException($"Filter operator {filter.Operator} is not supported for comparisons.")
         };
 
@@ -95,12 +95,12 @@ public static class ClientQueryFilterOptionExtensions
 
 public enum FilterOperator
 {
-    Equals,
-    NotEquals,
+    EqualTo,
+    NotEqualTo,
     GreaterThan,
-    GreaterThanOrEqual,
+    GreaterThanOrEqualTo,
     LessThan,
-    LessThanOrEqual,
+    LessThanOrEqualTo,
     And,
     Or
 }
@@ -115,12 +115,12 @@ public class JsonFilterOperatorConverter : JsonConverter<FilterOperator>
         var value = reader.GetString();
         return value switch
         {
-            "==" => FilterOperator.Equals,
-            "!=" => FilterOperator.NotEquals,
+            "==" => FilterOperator.EqualTo,
+            "!=" => FilterOperator.NotEqualTo,
             ">" => FilterOperator.GreaterThan,
-            ">=" => FilterOperator.GreaterThanOrEqual,
+            ">=" => FilterOperator.GreaterThanOrEqualTo,
             "<" => FilterOperator.LessThan,
-            "<=" => FilterOperator.LessThanOrEqual,
+            "<=" => FilterOperator.LessThanOrEqualTo,
             "&&" => FilterOperator.And,
             "||" => FilterOperator.Or,
             _ => throw new JsonException($"Unknown filter operator: {reader.GetString()}")
@@ -130,12 +130,12 @@ public class JsonFilterOperatorConverter : JsonConverter<FilterOperator>
     public override void Write(Utf8JsonWriter writer, FilterOperator value, JsonSerializerOptions _)
         => writer.WriteStringValue(value switch
         {
-            FilterOperator.Equals => "==",
-            FilterOperator.NotEquals => "!=",
+            FilterOperator.EqualTo => "==",
+            FilterOperator.NotEqualTo => "!=",
             FilterOperator.GreaterThan => ">",
-            FilterOperator.GreaterThanOrEqual => ">=",
+            FilterOperator.GreaterThanOrEqualTo => ">=",
             FilterOperator.LessThan => "<",
-            FilterOperator.LessThanOrEqual => "<=",
+            FilterOperator.LessThanOrEqualTo => "<=",
             FilterOperator.And => "&&",
             FilterOperator.Or => "||",
             _ => throw new JsonException($"{value} is not a valid filter operator")

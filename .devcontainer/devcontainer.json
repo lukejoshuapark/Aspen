@@ -16,7 +16,8 @@
 				"rust-lang.rust-analyzer",
 				"tamasfe.even-better-toml",
 				"vadimcn.vscode-lldb",
-				"ms-dotnettools.csdevkit"
+				"ms-dotnettools.csdevkit",
+				"csstools.postcss"
 			],
 			"settings": {
 				"javascript.preferences.quoteStyle": "double",

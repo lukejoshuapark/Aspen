@@ -9,7 +9,7 @@
 			"preLaunchTask": "build-aspen-api",
 			"env": {
 				"ASPNETCORE_ENVIRONMENT": "Development",
-				"ASPNETCORE_URLS": "http://localhost:42070"
+				"ASPNETCORE_URLS": "http://0.0.0.0:42070"
 			}
 		}
 	]
