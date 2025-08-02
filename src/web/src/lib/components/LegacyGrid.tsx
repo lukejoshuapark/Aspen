@@ -1,4 +1,4 @@
-import styles from "@/lib/components/Grid.module.css";
+import styles from "@/lib/components/LegacyGrid.module.css";
 import filterIcon from "@/assets/filter.svg";
 import { useMemo } from "react";
 import type { UseQueryResult } from "@tanstack/react-query";
@@ -6,13 +6,13 @@ import { type ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
 import type { LimitPropertiesByType } from "@/lib/typing/LimitPropertiesByType";
 import { toTitleCase } from "@/lib/text/toTitleCase";
 
-export interface GridProps<T extends object> {
+export interface LegacyGridProps<T extends object> {
 	forQuery: UseQueryResult<T[], Error>;
 	keyPropertyName: keyof LimitPropertiesByType<T, string | number>;
 	onQueryOptionsChange: (options: ClientQueryOptions) => void;
 }
 
-export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element => {
+export const LegacyGrid = <T extends object>(props: LegacyGridProps<T>): React.JSX.Element => {
 	const {
 		forQuery,
 		keyPropertyName
