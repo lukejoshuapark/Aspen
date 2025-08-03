@@ -12,7 +12,7 @@ const columnDefinitions: ColumnDefinition[] = [
 ];
 
 export const PageHome = (): React.JSX.Element => {
-	const [queryOptions, setQueryOptions] = useState<ClientQueryOptions>({ pagination: { cursor: 0, pageSize: 1000 } });
+	const [queryOptions, setQueryOptions] = useState<ClientQueryOptions>({ pagination: { cursor: 0, pageSize: 100 } });
 	const posts = usePosts("E31C78BB-4328-40D2-B460-570CF223580E", queryOptions);
 
 	return (
