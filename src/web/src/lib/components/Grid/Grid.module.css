@@ -1,0 +1,33 @@
+.grid {
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-radius: 6px;
+	overflow-x: hidden;
+	font-size: 12px;
+
+	& > div {
+		overflow-y: auto;
+
+		& > table {
+			width: 100%;
+			background-color: var(--color-background);
+			border-collapse: collapse;
+
+			& > thead > tr > th {
+				background-color: var(--color-background-accent);
+				text-align: left;
+				font-weight: bold;
+			}
+
+			& > * > tr {
+				& > * {
+					padding: 8px;
+					border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+				}
+			}
+
+			& > tbody > tr:last-child > * {
+				border-bottom: none;
+			}
+		}
+	}
+}

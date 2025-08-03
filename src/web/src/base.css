@@ -1,0 +1,32 @@
+@custom-media --md (min-width: 768px);
+@custom-media --dm (prefers-color-scheme: dark);
+
+:root {
+	--color-background: #FFFFFF;
+	--color-background-ambient: #F0F4F8;
+	--color-background-accent: #FAFAFA;
+	--color-text-default: #1F2937;
+
+	/* @media (--dm) {
+		--color-background: #000000;
+		--color-background-ambient: #0F0B07;
+		--color-background-accent: #050505;
+		--color-text-default: #E0D6C8;
+	} */
+}
+
+:root {
+	font-family: 'Inter', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	font-synthesis: none;
+	line-height: 1.5;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	background-color: var(--color-background-ambient); color: var(--color-text-default);
+	margin: 64px;
+}
