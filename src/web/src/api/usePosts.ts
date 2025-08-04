@@ -1,4 +1,4 @@
-import type { ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
+import { hashClientOptions, type ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
 import { useQuery } from "@tanstack/react-query";
 
 export interface PostResponseModel {
@@ -11,7 +11,7 @@ export interface PostResponseModel {
 
 export const usePosts = (userId: string, queryOptions: ClientQueryOptions) => {
 	return useQuery({
-		queryKey: ["posts", userId, queryOptions],
+		queryKey: ["posts", userId, hashClientOptions(queryOptions)],
 		queryFn: async () => {
 			const res = await fetch(`http://localhost:42070/post/${userId}`, {
 				body: JSON.stringify(queryOptions),

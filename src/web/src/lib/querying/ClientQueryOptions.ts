@@ -1,3 +1,5 @@
+import stableHash from "stable-hash";
+
 export interface ClientQueryOptions {
 	readonly filter?: ClientQueryFilterOption[];
 	readonly sort?: ClientQuerySortOption[];
@@ -28,11 +30,15 @@ export enum SortDirection {
 
 export enum FilterOperator {
 	EqualTo = "==",
-    NotEqualTo = "!=",
-    GreaterThan = ">",
-    GreaterThanOrEqualTo = ">=",
-    LessThan = "<",
-    LessThanOrEqualTo = "<=",
-    And = "&&",
-    Or = "||"
+	NotEqualTo = "!=",
+	GreaterThan = ">",
+	GreaterThanOrEqualTo = ">=",
+	LessThan = "<",
+	LessThanOrEqualTo = "<=",
+	And = "&&",
+	Or = "||"
 }
+
+export const hashClientOptions = (options: ClientQueryOptions): string => {
+	return stableHash(options);
+};
