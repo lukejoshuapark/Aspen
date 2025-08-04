@@ -22,7 +22,7 @@ public enum SortDirection
 
 public static class ClientQuerySortOptionExtensions
 {
-    public static IQueryable<T> ApplyTo<T>(this ClientQuerySortOption sort, IQueryable<T> queryable)
+    public static IOrderedQueryable<T> ApplyTo<T>(this ClientQuerySortOption sort, IQueryable<T> queryable)
     {
         var expression = AsExpression<T>(sort);
         return sort.Direction == SortDirection.Descending

@@ -16,12 +16,16 @@ export const PageHome = (): React.JSX.Element => {
 	const posts = usePosts("E31C78BB-4328-40D2-B460-570CF223580E", queryOptions);
 
 	return (
-		<Grid
-			forQuery={posts}
-			keyPropertyName="id"
-			columnDefinitions={columnDefinitions}
-			height="400px"
-			queryOptions={queryOptions}
-			onQueryOptionsChange={setQueryOptions} />
+		<>
+			<Grid
+				forQuery={posts}
+				keyPropertyName="id"
+				columnDefinitions={columnDefinitions}
+				height="400px"
+				queryOptions={queryOptions}
+				onQueryOptionsChange={setQueryOptions} />
+
+			{JSON.stringify(queryOptions, null, 2)}
+		</>
 	);
 };

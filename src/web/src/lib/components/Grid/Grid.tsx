@@ -12,6 +12,7 @@ export interface GridProps<T extends object> {
 	keyPropertyName?: string;
 	columnDefinitions?: ColumnDefinition[];
 	height?: string;
+	multiSort?: boolean;
 	queryOptions?: ClientQueryOptions;
 	onQueryOptionsChange?: (options: ClientQueryOptions) => void;
 }
@@ -25,6 +26,7 @@ export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element =
 	const data = useMemo(() => forQuery.data || [], [forQuery.data]);
 	const keyPropertyName = useMemo(() => props.keyPropertyName || "id", [props.keyPropertyName]);
 	const columnDefinitions = useMemo(() => props.columnDefinitions || deriveColumnDefinitions(data, keyPropertyName), [props.columnDefinitions, data]);
+	const multiSort = useMemo(() => props.multiSort || true, [props.multiSort]);
 	const queryOptions = useMemo(() => props.queryOptions || { }, [props.queryOptions]);
 	const onQueryOptionsChange = useMemo(() => props.onQueryOptionsChange || (() => { }), [props.onQueryOptionsChange]);
 	const gridStyle: React.CSSProperties = useMemo(() => height ? { height } : { }, [height]);
@@ -37,6 +39,7 @@ export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element =
 				<thead>
 					<GridHeaderRow
 						columnDefinitions={columnDefinitions}
+						multiSort={multiSort}
 						queryOptions={queryOptions}
 						onQueryOptionsChange={onQueryOptionsChange} />
 				</thead>
