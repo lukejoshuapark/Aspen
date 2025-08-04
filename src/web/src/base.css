@@ -5,6 +5,7 @@
 	--color-background: #FFFFFF;
 	--color-background-ambient: #F0F4F8;
 	--color-background-accent: #FAFAFA;
+	--color-background-accent-hover: #F3F3F3;
 	--color-text-default: #1F2937;
 
 	/* @media (--dm) {

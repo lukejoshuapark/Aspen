@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const columnDefinitions: ColumnDefinition[] = [
 	{ column: "title", header: "Title" },
-	{ column: "description", header: "Description" },
+	{ column: "description", header: "Description", canSort: false },
 	{ column: "likes", header: "Likes" }
 ];
 

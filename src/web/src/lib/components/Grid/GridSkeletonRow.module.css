@@ -1,0 +1,14 @@
+.gridSkeletonRow > td > div {
+	animation: GridSkeletonRowShimmer 1.6s infinite linear;
+	background: rgba(0, 0, 0, 0.05);
+	border-radius: 7px;
+	height: 12px;
+	margin: 2px 0;
+	width: 50%;
+
+	@keyframes GridSkeletonRowShimmer {
+		0% { background: rgba(0, 0, 0, 0.05); }
+		50% { background: rgba(0, 0, 0, 0.1); }
+		100% { background: rgba(0, 0, 0, 0.05); }
+	}
+}

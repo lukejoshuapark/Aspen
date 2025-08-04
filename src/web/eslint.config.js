@@ -26,10 +26,6 @@ export default tseslint.config([
 				"error",
 				"tab"
 			],
-			"linebreak-style": [
-				"error",
-				"unix"
-			],
 			"quotes": [
 				"error",
 				"double"

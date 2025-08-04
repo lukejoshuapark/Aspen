@@ -4,6 +4,8 @@ import type { ColumnDefinition } from "@/lib/components/Grid/ColumnDefinition";
 import { GridRow } from "@/lib/components/Grid/GridRow";
 import React, { useMemo, type Key } from "react";
 import type { ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
+import { GridSkeletonRow } from "@/lib/components/Grid/GridSkeletonRow";
+import { GridHeaderRow } from "@/lib/components/Grid/GridHeaderRow";
 
 export interface GridProps<T extends object> {
 	forQuery: UseQueryResult<T[], Error>;
@@ -23,7 +25,8 @@ export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element =
 	const data = useMemo(() => forQuery.data || [], [forQuery.data]);
 	const keyPropertyName = useMemo(() => props.keyPropertyName || "id", [props.keyPropertyName]);
 	const columnDefinitions = useMemo(() => props.columnDefinitions || deriveColumnDefinitions(data, keyPropertyName), [props.columnDefinitions, data]);
-	const onQueryOptionsChange = useMemo(() => props.onQueryOptionsChange || (() => {}), [props.onQueryOptionsChange]);
+	const queryOptions = useMemo(() => props.queryOptions || { }, [props.queryOptions]);
+	const onQueryOptionsChange = useMemo(() => props.onQueryOptionsChange || (() => { }), [props.onQueryOptionsChange]);
 	const gridStyle: React.CSSProperties = useMemo(() => height ? { height } : { }, [height]);
 
 	const rows = data as Record<string, unknown>[];
@@ -32,13 +35,10 @@ export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element =
 		<div className={styles.grid} style={gridStyle}>
 			<table>
 				<thead>
-					<tr>
-						{
-							columnDefinitions.map(x => (
-								<th key={x.column}>{x.header || x.column}</th>
-							))
-						}
-					</tr>
+					<GridHeaderRow
+						columnDefinitions={columnDefinitions}
+						queryOptions={queryOptions}
+						onQueryOptionsChange={onQueryOptionsChange} />
 				</thead>
 				<tbody>
 					{
@@ -49,6 +49,12 @@ export const Grid = <T extends object>(props: GridProps<T>): React.JSX.Element =
 								columnDefinitions={columnDefinitions}
 								onQueryOptionsChange={onQueryOptionsChange} />
 						))
+					}
+
+					{
+						forQuery.isLoading && (Array.from({ length: 10 }).map((_, i) => (
+							<GridSkeletonRow key={`skeleton-${i}`} columnCount={columnDefinitions.length || 5} />
+						)))
 					}
 				</tbody>
 			</table>

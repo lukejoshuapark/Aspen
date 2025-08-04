@@ -4,6 +4,7 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	font-size: 12px;
+	background-color: var(--color-background);
 
 	scrollbar-width: thin;
 	scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
@@ -12,15 +13,6 @@
 		width: 100%;
 		background-color: var(--color-background);
 		border-collapse: collapse;
-
-		& > thead > tr > th {
-			background-color: var(--color-background-accent);
-			text-align: left;
-			font-weight: bold;
-			position: sticky;
-			top: 0;
-			z-index: 2;
-		}
 
 		& > * > tr {
 			& > * {

@@ -4,4 +4,5 @@ export interface ColumnDefinition {
 	column: string;
 	header?: string;
 	renderer?: CellRenderer<unknown>;
+	canSort?: boolean;
 }
