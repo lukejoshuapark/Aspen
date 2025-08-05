@@ -30,7 +30,8 @@ public class PostController : ControllerBase
                 x.Id,
                 x.Title,
                 x.Description,
-                x.Likes
+                x.Likes,
+                x.Published
             })
             .WithClientQuery(queryOptions)
             .ToListAsync();

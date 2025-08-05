@@ -3,6 +3,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PageHome } from "@/pages/PageHome";
+import { ModuleRegistry, InfiniteRowModelModule } from "ag-grid-community";
+
+ModuleRegistry.registerModules([ InfiniteRowModelModule ]);
 
 const queryClient = new QueryClient({
 	defaultOptions: {

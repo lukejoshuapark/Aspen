@@ -6,28 +6,30 @@ export interface PostResponseModel {
 	readonly title: string;
 	readonly description: string;
 	readonly likes: number;
-	readonly other: boolean;
+	readonly published: boolean;
 }
 
 export const usePosts = (userId: string, queryOptions: ClientQueryOptions) => {
 	return useQuery({
 		queryKey: ["posts", userId, hashClientOptions(queryOptions)],
-		queryFn: async () => {
-			const res = await fetch(`http://localhost:42070/post/${userId}`, {
-				body: JSON.stringify(queryOptions),
-				cache: "no-cache",
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				}
-			});
+		queryFn: async () => listPosts(userId, queryOptions)
+	});
+};
 
-			if (!res.ok) {
-				throw new Error("Couldn't fetch posts");
-			}
-
-			const data: PostResponseModel[] = await res.json();
-			return data;
+export const listPosts = async (userId: string, queryOptions: ClientQueryOptions): Promise<PostResponseModel[]> => {
+	const res = await fetch(`http://localhost:42070/post/${userId}`, {
+		body: JSON.stringify(queryOptions),
+		cache: "no-cache",
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
 		}
 	});
+
+	if (!res.ok) {
+		throw new Error("Couldn't fetch posts");
+	}
+
+	const data: PostResponseModel[] = await res.json();
+	return data;
 };
