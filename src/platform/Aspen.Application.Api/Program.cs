@@ -50,7 +50,8 @@ public static class Program
                 UserId = Guid.Parse("E31C78BB-4328-40D2-B460-570CF223580E"),
                 Title = GetRandomPostTitle(rand),
                 Description = GetRandomPostDescription(rand),
-                Likes = GetRandomPostLikes(rand)
+                Likes = GetRandomPostLikes(rand),
+                Published = rand.Next(0, 2) == 1
             });
         }
 

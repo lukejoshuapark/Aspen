@@ -28,7 +28,8 @@ public class QueryableExtensionsTests
                 [p].[Id],
                 [p].[Title],
                 [p].[Description],
-                [p].[Likes]
+                [p].[Likes],
+                [p].[Published]
             FROM
                 [Aspen].[Post] AS [p]
             ORDER BY
@@ -70,7 +71,8 @@ public class QueryableExtensionsTests
                 [p].[Id],
                 [p].[Title],
                 [p].[Description],
-                [p].[Likes]
+                [p].[Likes],
+                [p].[Published]
             FROM
                 [Aspen].[Post] AS [p]
             ORDER BY
@@ -116,7 +118,8 @@ public class QueryableExtensionsTests
                 [p].[Id],
                 [p].[Title],
                 [p].[Description],
-                [p].[Likes]
+                [p].[Likes],
+                [p].[Published]
             FROM
                 [Aspen].[Post] AS [p]
             ORDER BY
@@ -144,8 +147,14 @@ public class QueryableExtensionsTests
                         new ClientQueryFilterOption
                         {
                             Column = "Title",
-                            Operator = FilterOperator.EqualTo,
+                            Operator = FilterOperator.NotEqualTo,
                             Operand = JsonDocument.Parse("\"The title of my post\"").RootElement
+                        },
+                        new ClientQueryFilterOption
+                        {
+                            Column = "Published",
+                            Operator = FilterOperator.EqualTo,
+                            Operand = JsonDocument.Parse("true").RootElement
                         },
                         new ClientQueryFilterOption
                         {
@@ -179,23 +188,25 @@ public class QueryableExtensionsTests
         // Assert.
         var expectedSql = @"
             DECLARE @__Value_0 nvarchar(4000) = N'The title of my post';
-            DECLARE @__Value_1 int = 10;
-            DECLARE @__Value_2 int = 5;
-            DECLARE @__p_3 int = 0;
-            DECLARE @__p_4 int = 1000;
+            DECLARE @__Value_1 bit = CAST(1 AS bit);
+            DECLARE @__Value_2 int = 10;
+            DECLARE @__Value_3 int = 5;
+            DECLARE @__p_4 int = 0;
+            DECLARE @__p_5 int = 1000;
 
             SELECT
                 [p].[Id],
                 [p].[Title],
                 [p].[Description],
-                [p].[Likes]
+                [p].[Likes],
+                [p].[Published]
             FROM
                 [Aspen].[Post] AS [p]
             WHERE
-                [p].[Title] = @__Value_0 AND ([p].[Likes] > @__Value_1 OR [p].[Likes] = @__Value_2)
+                [p].[Title] <> @__Value_0 AND [p].[Published] = @__Value_1 AND ([p].[Likes] > @__Value_2 OR [p].[Likes] = @__Value_3)
             ORDER BY
                 (SELECT 1)
-            OFFSET @__p_3 ROWS FETCH NEXT @__p_4 ROWS ONLY
+            OFFSET @__p_4 ROWS FETCH NEXT @__p_5 ROWS ONLY
         ";
 
         AssertNormalizedSql(expectedSql, sql);
@@ -214,7 +225,8 @@ public class QueryableExtensionsTests
             Id = x.Id,
             Title = x.Title,
             Description = x.Description,
-            Likes = x.Likes
+            Likes = x.Likes,
+            Published = x.Published
         });
     }
 
@@ -233,5 +245,6 @@ public class QueryableExtensionsTests
         public required string Title { get; set; }
         public required string Description { get; set; }
         public required int Likes { get; set; }
+        public required bool Published { get; set; }
     }
 }
