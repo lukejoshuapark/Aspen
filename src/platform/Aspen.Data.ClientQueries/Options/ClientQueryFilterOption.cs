@@ -39,10 +39,10 @@ public static class ClientQueryFilterOptionExtensions
         var property = Expression.Property(parameter, filter.Column!);
         var constant = filter.Operand?.ValueKind switch
         {
-            JsonValueKind.String => Expression.Constant(filter.Operand.Value.GetString()),
-            JsonValueKind.Number => Expression.Constant(GetNumberConstant(filter.Operand.Value, property.Type)),
-            JsonValueKind.True => Expression.Constant(true),
-            JsonValueKind.False => Expression.Constant(false),
+            JsonValueKind.String => GetPropertyExpression(filter.Operand.Value.GetString()),
+            JsonValueKind.Number => GetNumberPropertyExpression(filter.Operand.Value, property.Type),
+            JsonValueKind.True => GetPropertyExpression(true),
+            JsonValueKind.False => GetPropertyExpression(false),
             _ => throw new NotSupportedException($"Filter operand type {filter.Operand?.ValueKind} is not supported.")
         };
 
@@ -76,19 +76,22 @@ public static class ClientQueryFilterOptionExtensions
         return Expression.Lambda<Func<T, bool>>(combinedBody, parameter);
     }
 
-    private static object GetNumberConstant(JsonElement operand, Type type)
+    private static Expression GetPropertyExpression<T>(T value)
+        => Expression.Property(Expression.Constant(new ExpressionValueContainer<T>(value)), nameof(ExpressionValueContainer<T>.Value));
+
+    private static Expression GetNumberPropertyExpression(JsonElement operand, Type type)
         => type switch
         {
-            _ when type == typeof(byte) => operand.GetByte(),
-            _ when type == typeof(short) => operand.GetInt16(),
-            _ when type == typeof(ushort) => operand.GetUInt16(),
-            _ when type == typeof(int) => operand.GetInt32(),
-            _ when type == typeof(uint) => operand.GetUInt32(),
-            _ when type == typeof(long) => operand.GetInt64(),
-            _ when type == typeof(ulong) => operand.GetUInt64(),
-            _ when type == typeof(float) => operand.GetSingle(),
-            _ when type == typeof(double) => operand.GetDouble(),
-            _ when type == typeof(decimal) => operand.GetDecimal(),
+            _ when type == typeof(byte) => GetPropertyExpression(operand.GetByte()),
+            _ when type == typeof(short) => GetPropertyExpression(operand.GetInt16()),
+            _ when type == typeof(ushort) => GetPropertyExpression(operand.GetUInt16()),
+            _ when type == typeof(int) => GetPropertyExpression(operand.GetInt32()),
+            _ when type == typeof(uint) => GetPropertyExpression(operand.GetUInt32()),
+            _ when type == typeof(long) => GetPropertyExpression(operand.GetInt64()),
+            _ when type == typeof(ulong) => GetPropertyExpression(operand.GetUInt64()),
+            _ when type == typeof(float) => GetPropertyExpression(operand.GetSingle()),
+            _ when type == typeof(double) => GetPropertyExpression(operand.GetDouble()),
+            _ when type == typeof(decimal) => GetPropertyExpression(operand.GetDecimal()),
             _ => throw new NotSupportedException($"Number type {type} is not supported.")
         };
 }
@@ -105,7 +108,7 @@ public enum FilterOperator
     Or
 }
 
-public class JsonFilterOperatorConverter : JsonConverter<FilterOperator>
+internal class JsonFilterOperatorConverter : JsonConverter<FilterOperator>
 {
     public override FilterOperator Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

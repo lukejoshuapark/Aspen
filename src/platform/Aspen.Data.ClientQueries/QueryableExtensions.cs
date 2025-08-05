@@ -27,11 +27,17 @@ public static class QueryableExtensions
             queryable = orderedQueryable;
         }
 
-        if (options.Pagination != null)
+        if (options.Pagination == null)
         {
-            options.Pagination.PageSize = Math.Min(options.Pagination.PageSize, maximumPageSize);
-            queryable = options.Pagination.ApplyTo(queryable);
+            options.Pagination = new ClientQueryPaginationOption
+            {
+                Cursor = 0,
+                PageSize = maximumPageSize
+            };
         }
+
+        options.Pagination.PageSize = Math.Min(options.Pagination.PageSize, maximumPageSize);
+        queryable = options.Pagination.ApplyTo(queryable);
 
         return queryable;
     }
