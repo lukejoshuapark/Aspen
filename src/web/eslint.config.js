@@ -60,9 +60,6 @@ export default tseslint.config([
 					"message": "Don't use export default - use named exports instead."
 				}
 			],
-			"no-console": [
-				"error"
-			],
 			"no-multiple-empty-lines": [
 				"error",
 				{ max: 1 }

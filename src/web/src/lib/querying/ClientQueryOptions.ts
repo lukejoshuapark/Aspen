@@ -1,8 +1,8 @@
 import stableHash from "stable-hash";
 
 export interface ClientQueryOptions {
-	readonly filter?: ClientQueryFilterOption[];
-	readonly sort?: ClientQuerySortOption[];
+	readonly filters?: ClientQueryFilterOption[];
+	readonly sorts?: ClientQuerySortOption[];
 	readonly pagination?: ClientQueryPaginationOption;
 }
 

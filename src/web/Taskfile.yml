@@ -3,3 +3,6 @@ tasks:
   start:
     cmds:
       - npm start
+  test:
+    cmds:
+      - npm test

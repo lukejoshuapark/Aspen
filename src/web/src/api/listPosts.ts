@@ -1,5 +1,4 @@
-import { hashClientOptions, type ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
-import { useQuery } from "@tanstack/react-query";
+import { type ClientQueryOptions } from "@/lib/querying/ClientQueryOptions";
 
 export interface PostResponseModel {
 	readonly id: string;
@@ -8,14 +7,6 @@ export interface PostResponseModel {
 	readonly likes: number;
 	readonly published: boolean;
 }
-
-export const usePosts = (userId: string, queryOptions: ClientQueryOptions) => {
-	return useQuery({
-		queryKey: ["posts", userId, hashClientOptions(queryOptions)],
-		queryFn: async () => listPosts(userId, queryOptions),
-		placeholderData: x => x
-	});
-};
 
 export const listPosts = async (userId: string, queryOptions: ClientQueryOptions): Promise<PostResponseModel[]> => {
 	const res = await fetch(`http://localhost:42070/post/${userId}`, {

@@ -5,10 +5,10 @@ namespace Aspen.Data.ClientQueries;
 
 public class ClientQueryOptions
 {
-    [JsonPropertyName("filter")]
+    [JsonPropertyName("filters")]
     public ClientQueryFilterOption[] Filters { get; set; } = [];
 
-    [JsonPropertyName("sort")]
+    [JsonPropertyName("sorts")]
     public ClientQuerySortOption[] Sorts { get; set; } = [];
 
     [JsonPropertyName("pagination")]
