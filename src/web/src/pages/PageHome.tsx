@@ -26,17 +26,19 @@ export const PageHome = (): React.JSX.Element => {
 
 const PrebuiltGrid = () => {
 	return (
-		<div style={{ height: "512px" }}>
-			<AgGridReact
-				rowModelType="infinite"
-				datasource={datasource}
-				columnDefs={[
-					{ field: "title" },
-					{ field: "description" },
-					{ field: "likes", filter: true },
-					{ field: "published" }
-				]} />
-		</div>
+		<>
+			<div style={{ height: "512px" }}>
+				<AgGridReact
+					rowModelType="infinite"
+					datasource={datasource}
+					columnDefs={[
+						{ field: "title", filter: "agTextColumnFilter" },
+						{ field: "description", filter: true },
+						{ field: "likes", filter: "agNumberColumnFilter" },
+						{ field: "published", filter: true }
+					]} />
+			</div>
+		</>
 	);
 };
 
@@ -66,8 +68,11 @@ const datasource: IDatasource = {
 			endRow,
 			successCallback,
 			failCallback,
-			sortModel
+			sortModel,
+			filterModel
 		} = params;
+
+		console.log("Filter", filterModel);
 
 		listPosts("E31C78BB-4328-40D2-B460-570CF223580E", {
 			pagination: {

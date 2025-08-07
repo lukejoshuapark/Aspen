@@ -12,7 +12,8 @@ export interface PostResponseModel {
 export const usePosts = (userId: string, queryOptions: ClientQueryOptions) => {
 	return useQuery({
 		queryKey: ["posts", userId, hashClientOptions(queryOptions)],
-		queryFn: async () => listPosts(userId, queryOptions)
+		queryFn: async () => listPosts(userId, queryOptions),
+		placeholderData: x => x
 	});
 };
 

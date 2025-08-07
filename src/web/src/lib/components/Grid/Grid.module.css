@@ -1,5 +1,5 @@
 .grid {
-	border: 1px solid rgba(0, 0, 0, 0.075);
+	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 6px;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -7,7 +7,7 @@
 	background-color: var(--color-background);
 
 	scrollbar-width: thin;
-	scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.075);
+	scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
 
 	& > table {
 		width: 100%;
@@ -16,8 +16,8 @@
 
 		& > * > tr {
 			& > * {
-				padding: 8px;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+				padding: 12px;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 			}
 		}
 
